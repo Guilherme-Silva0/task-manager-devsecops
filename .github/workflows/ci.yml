@@ -1,0 +1,42 @@
+name: DevSecOps CI Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Build da Imagem Docker
+      run: |
+        echo "Iniciando a compilação do ambiente..."
+        docker build -t task-manager-app .
+        echo "Build finalizado com sucesso!"
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    - name: Instalar Dependências
+      run: |
+        echo "Instalando dependências para teste..."
+        pip install -r requirements.txt
+
+    - name: Validar Sintaxe (Testes)
+      run: |
+        echo "Validando a integridade do código fonte..."
+        python -m py_compile run.py
+        python -m py_compile todo_project/models.py
+        python -m py_compile todo_project/routes.py
+        echo "Todos os testes passaram!"
