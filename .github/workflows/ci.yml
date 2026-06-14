@@ -65,4 +65,4 @@ jobs:
     - name: Análise de Dependências (Safety)
       run: |
         echo "Buscando pacotes vulneráveis..."
-        safety check -r todo_project/requirements.txt || true
+        safety check -r requirements.txt || true
