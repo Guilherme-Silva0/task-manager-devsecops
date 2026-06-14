@@ -36,7 +36,7 @@ jobs:
     - name: Validar Sintaxe (Testes)
       run: |
         echo "Validando a integridade do código fonte..."
-        python -m py_compile run.py
-        python -m py_compile todo_project/models.py
-        python -m py_compile todo_project/routes.py
+        python -m py_compile todo_project/run.py
+        python -m py_compile todo_project/todo_project/models.py
+        python -m py_compile todo_project/todo_project/routes.py
         echo "Todos os testes passaram!"
