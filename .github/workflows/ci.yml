@@ -40,3 +40,29 @@ jobs:
         python -m py_compile todo_project/todo_project/models.py
         python -m py_compile todo_project/todo_project/routes.py
         echo "Todos os testes passaram!"
+
+  sast:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    - name: Instalar ferramentas SAST (Bandit e Safety)
+      run: |
+        pip install bandit safety
+
+    - name: Análise Estática de Código (Bandit)
+      run: |
+        echo "Buscando vulnerabilidades no código Python..."
+        bandit -r todo_project/ || true
+
+    - name: Análise de Dependências (Safety)
+      run: |
+        echo "Buscando pacotes vulneráveis..."
+        safety check -r todo_project/requirements.txt || true
